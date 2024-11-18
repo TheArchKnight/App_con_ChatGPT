@@ -5,21 +5,20 @@ import pandas as pd
 if "materias" not in st.session_state:
     st.session_state["materias"] = []
 
+
 # Función para registrar las materias, calificaciones y créditos
 def registrar_materia():
     nombre = st.text_input("Nombre de la materia")
-    calificacion = st.number_input("Calificación (0-5)", min_value=0.0, max_value=5.0, step=0.1)
+    calificacion = st.number_input("Calificación (0-5)",
+                                   min_value=0.0, max_value=5.0, step=0.1)
     creditos = st.number_input("Créditos", min_value=1, step=1)
-    
     # Lista de tipos de materias actualizada
     tipos_materias = [
-        "Disciplinar Obligatoria", "Disciplinar Optativa", 
-        "Libre Elección", "Nivelación", 
+        "Disciplinar Obligatoria", "Disciplinar Optativa",
+        "Libre Elección", "Nivelación",
         "Fundamental Obligatoria", "Fundamental Optativa"
     ]
-    
     tipo = st.selectbox("Tipo de materia", tipos_materias)
-    
     if st.button("Registrar materia"):
         nueva_materia = {
             "Nombre": nombre,
@@ -29,6 +28,7 @@ def registrar_materia():
         }
         st.session_state["materias"].append(nueva_materia)
         st.success(f"Materia {nombre} registrada exitosamente.")
+
 
 # Función para calcular el PAPA global
 def calcular_papa_global():
@@ -44,6 +44,7 @@ def calcular_papa_global():
     papa_global = df["Valor Ponderado"].sum() / df["Créditos"].sum()
     return papa_global
 
+
 # Función para calcular el PAPA por tipología de asignatura
 def calcular_papa_por_tipo():
     if not st.session_state["materias"]:
@@ -54,13 +55,12 @@ def calcular_papa_por_tipo():
     df = pd.DataFrame(st.session_state["materias"])
     # Calcular el valor ponderado para cada materia
     df["Valor Ponderado"] = df["Calificación"] * df["Créditos"]
-    
     # Calcular el PAPA por tipo de materia
     papa_por_tipo = df.groupby("Tipo").apply(
         lambda x: x["Valor Ponderado"].sum() / x["Créditos"].sum()
     ).reset_index(name="PAPA")
-    
     return papa_por_tipo
+
 
 # Interfaz de usuario
 st.title("Cálculo del PAPA (Promedio Académico)")
@@ -87,4 +87,3 @@ st.subheader("Materias Registradas")
 if st.session_state["materias"]:
     df_materias = pd.DataFrame(st.session_state["materias"])
     st.dataframe(df_materias)
-
