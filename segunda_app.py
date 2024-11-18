@@ -116,7 +116,7 @@ conversiones = {
 }
 
 # Interfaz Streamlit
-st.title("Conversor Universal")
+st.title("Conversor Universal, creado por Angel Mazo")
 st.write("Selecciona una categoría, el tipo de conversión y el valor.")
 
 # Selección de categoría y tipo de conversión
